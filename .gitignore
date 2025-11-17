@@ -1,0 +1,47 @@
+# ---- Global ----
+.DS_Store
+Thumbs.db
+
+# ---- IDE / Editor ----
+.idea/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+.vscode/
+
+# ---- Backend: Java / Spring Boot / Gradle ----
+FullStackDemo-Backend/build/
+FullStackDemo-Backend/out/
+FullStackDemo-Backend/bin/
+FullStackDemo-Backend/.gradle/
+FullStackDemo-Backend/.settings/
+FullStackDemo-Backend/.classpath
+FullStackDemo-Backend/.project
+
+# Logs
+FullStackDemo-Backend/logs/
+FullStackDemo-Backend/*.log
+FullStackDemo-Backend/**/logs/
+
+# Spring Boot packaged artifacts
+FullStackDemo-Backend/*.jar
+FullStackDemo-Backend/*.war
+
+# ---- Frontend: Node / React / Vite ----
+FullStackDemo-Frontend/node_modules/
+FullStackDemo-Frontend/dist/
+FullStackDemo-Frontend/.vite/
+FullStackDemo-Frontend/.npm/
+FullStackDemo-Frontend/.pnpm-store/
+FullStackDemo-Frontend/.cache/
+
+# ---- Env & sensitive config (do NOT commit secrets) ----
+FullStackDemo-Frontend/.env
+FullStackDemo-Frontend/.env.*
+FullStackDemo-Backend/src/main/resources/application.properties
+FullStackDemo-Backend/src/main/resources/application-*.properties
+FullStackDemo-Backend/src/main/resources/application.yml
+FullStackDemo-Backend/src/main/resources/application-*.yml
