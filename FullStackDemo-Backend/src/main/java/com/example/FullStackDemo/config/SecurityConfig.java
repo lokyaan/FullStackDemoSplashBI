@@ -30,14 +30,10 @@ public class SecurityConfig {
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints
-                .requestMatchers("/", "/api/auth/**", "/error").permitAll()
+                .requestMatchers("/", "/api/auth/**", "/error","/api/proxy/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-               
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/manager/**").hasRole("MANAGER")
-
-              
                 .anyRequest().authenticated()
             )
             .httpBasic(httpBasic -> httpBasic.disable())

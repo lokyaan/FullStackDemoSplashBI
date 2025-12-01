@@ -130,9 +130,21 @@ public class RequestService {
         summary.put("PENDING", pending);
         return summary;
     }
+    @Transactional(readOnly = true)
+    public List<ProductRequestResponse> getRequestsByStatus(String status) {
+        var reqStatus = RequestStatus.valueOf(status.toUpperCase());
+        return prRepo.findByStatusOrderByCreatedAtAsc(reqStatus)
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
 
+    // Admin API: Accept / Reject
+    @Transactional
+    public ProductRequestResponse decision(Long id, String decision, String adminEmail) {
+        var reqStatus = RequestStatus.valueOf(decision.toUpperCase());
+        return decide(adminEmail, id, reqStatus, "");
+    }
 
-    
-    
 
 }

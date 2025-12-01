@@ -14,7 +14,7 @@ import com.example.FullStackDemo.model.AgifyResponse;
 
 @RestController
 @CrossOrigin(origins="http://localhost:5173")
-@RequestMapping("/api/proxy")
+@RequestMapping("api/proxy")
 public class ExternalApiController {
 
 	@GetMapping("/agify")
