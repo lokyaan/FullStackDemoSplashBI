@@ -1,3 +1,4 @@
+
 # FullStackDemo application - SpringBoot + React + MySql (Dockerised)
 
 
@@ -41,3 +42,6 @@ User authentication with JWT
 1. To create an admin account sign in by entering details by selecting MANAGER role in sign in page
 2. Once requested wait for the approval to be assigned as an ADMIN by MANAGER which can be accepted or rejected
 3. Once the admin reques is accepted by MANAGER the admin can view the available products that are requested by the customers
+
+
+
