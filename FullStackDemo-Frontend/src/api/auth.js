@@ -1,10 +1,10 @@
 import api from './client'
 
 export const signup = (payload) =>
-  api.post('/api/auth/signup', payload)
+  api.post('/auth/signup', payload)
 
 export const login = async (payload) => {
-  const { data } = await api.post('/api/auth/login', payload)
+  const { data } = await api.post('/auth/login', payload)
   // store token for future requests
   localStorage.setItem('accessToken', data.accessToken)
   localStorage.setItem('fullName', data.fullName ?? '')
@@ -21,6 +21,6 @@ export const logout = () => {
 }
 
 export const getProfile = async () => {
-  const { data } = await api.get('/api/me') // if you added /api/me returning profile
+  const { data } = await api.get('/me') // if you added /api/me returning profile
   return data
 }

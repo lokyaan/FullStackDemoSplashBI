@@ -23,7 +23,7 @@ export default function ChangePassword() {
     }
     try {
       setLoading(true)
-      await api.put('/api/auth/change-password', form)
+      await api.put('/auth/change-password', form)
       push('Password changed successfully', 'success')
       setForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
     } catch (err) {

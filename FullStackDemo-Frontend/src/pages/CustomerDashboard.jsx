@@ -18,8 +18,8 @@ export default function CustomerDashboard() {
     (async () => {
       try {
         const [pRes, rRes] = await Promise.all([
-          api.get('/api/products'),
-          api.get('/api/me/requests')
+          api.get('/products'),
+          api.get('/me/requests')
         ])
         setProducts(pRes.data)
         setRequests(rRes.data)
@@ -31,7 +31,7 @@ export default function CustomerDashboard() {
 
   async function request(productId) {
     try {
-      const { data } = await api.post('/api/me/requests', { productId })
+      const { data } = await api.post('/me/requests', { productId })
       setRequests(prev => [data, ...prev])
       push('Request created', 'success')
     } catch (e) {
