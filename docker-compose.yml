@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: fullstack-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Welcome#$4321
+      MYSQL_DATABASE: fullStackDemo
+    ports:
+      - "3307:3306"
+    networks:
+      - fullstack-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "-uroot", "-pWelcome#$4321", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./FullStackDemo-Backend
+    container_name: fullstack-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fullStackDemo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Welcome#$4321
+    ports:
+      - "8080:8080"
+    networks:
+      - fullstack-network
+
+  frontend:
+    build: ./FullStackDemo-Frontend
+    container_name: fullstack-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - fullstack-network
+
+networks:
+  fullstack-network:
+    driver: bridge

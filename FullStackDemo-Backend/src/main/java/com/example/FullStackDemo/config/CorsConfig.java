@@ -15,6 +15,8 @@ public class CorsConfig {
         CorsConfiguration cfg = new CorsConfiguration();
         // during dev, explicitly allow Vite dev server origins
         cfg.setAllowedOrigins(List.of(
+        		"http://localhost:3000",
+                "http://127.0.0.1:3000",
                 "http://localhost:5173",
                 "http://127.0.0.1:5173"
         ));

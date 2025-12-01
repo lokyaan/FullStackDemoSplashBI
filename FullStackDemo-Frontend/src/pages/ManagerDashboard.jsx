@@ -15,8 +15,8 @@ export default function ManagerDashboard() {
     async function loadData() {
       try {
         const [pendingRes, approvedRes] = await Promise.all([
-          api.get("/api/manager/pending-admins"),
-          api.get("/api/manager/approved-admins"),
+          api.get("/manager/pending-admins"),
+          api.get("/manager/approved-admins"),
         ]);
 
         setPendingAdmins(pendingRes.data);
@@ -31,9 +31,9 @@ export default function ManagerDashboard() {
   // ✅ Approve admin
   async function approve(id) {
     try {
-      await api.put(`/api/manager/approve/${id}`);
+      await api.put(`/manager/approve/${id}`);
       setPendingAdmins((prev) => prev.filter((u) => u.id !== id));
-      const res = await api.get("/api/manager/approved-admins");
+      const res = await api.get("/manager/approved-admins");
       setApprovedAdmins(res.data);
       alert("Admin approved successfully ✅");
     } catch (err) {
@@ -45,7 +45,7 @@ export default function ManagerDashboard() {
   // ❌ Reject admin
   async function reject(id) {
     try {
-      await api.delete(`/api/manager/reject/${id}`);
+      await api.delete(`/manager/reject/${id}`);
       setPendingAdmins((prev) => prev.filter((u) => u.id !== id));
       alert("Admin rejected ❌");
     } catch (err) {
@@ -57,7 +57,7 @@ export default function ManagerDashboard() {
   // 🗑️ Remove approved admin
   async function removeAdmin(id) {
     try {
-      await api.delete(`/api/manager/remove-admin/${id}`);
+      await api.delete(`/manager/remove-admin/${id}`);
       setApprovedAdmins((prev) => prev.filter((u) => u.id !== id));
       alert("Admin removed successfully 🗑️");
     } catch (err) {

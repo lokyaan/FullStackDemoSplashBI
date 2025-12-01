@@ -20,9 +20,9 @@ export default function AdminDashboard() {
     async function loadAllCounts() {
       try {
         const [pending, accepted, rejected] = await Promise.all([
-          api.get(`/api/admin/requests?status=PENDING`),
-          api.get(`/api/admin/requests?status=ACCEPTED`),
-          api.get(`/api/admin/requests?status=REJECTED`)
+          api.get(`/admin/requests?status=PENDING`),
+          api.get(`/admin/requests?status=ACCEPTED`),
+          api.get(`/admin/requests?status=REJECTED`)
         ])
         setSummary({
           PENDING: pending.data.length,
@@ -40,7 +40,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function loadRequests() {
       try {
-        const { data } = await api.get(`/api/admin/requests?status=${status}`)
+        const { data } = await api.get(`/admin/requests?status=${status}`)
         setRequests(data)
 
         // build age map keyed by request ID to avoid collisions
@@ -48,7 +48,7 @@ export default function AdminDashboard() {
           data.map(async (req) => {
             if (!req.customerName) return [req.id, -1]
             try {
-              const res = await api.get('/api/proxy/agify', { params: { name: req.customerName } })
+              const res = await api.get('/proxy/agify', { params: { name: req.customerName } })
               const ageVal = res?.data?.age
               return [req.id, ageVal != null ? ageVal : -1]
             } catch {
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
 
   async function decide(id, decision) {
     try {
-      const { data } = await api.put(`/api/admin/requests/${id}/decision`, { decision, note: '' })
+      const { data } = await api.put(`/admin/requests/${id}/decision`, { decision, note: '' })
       setRequests((prev) => prev.map((r) => (r.id === id ? data : r)))
       push(
         decision === 'ACCEPTED' ? 'Request approved' : 'Request rejected',
@@ -76,9 +76,9 @@ export default function AdminDashboard() {
 
       // refresh counts after decision
       const [pending, accepted, rejected] = await Promise.all([
-        api.get(`/api/admin/requests?status=PENDING`),
-        api.get(`/api/admin/requests?status=ACCEPTED`),
-        api.get(`/api/admin/requests?status=REJECTED`)
+        api.get(`/admin/requests?status=PENDING`),
+        api.get(`/admin/requests?status=ACCEPTED`),
+        api.get(`/admin/requests?status=REJECTED`)
       ])
       setSummary({
         PENDING: pending.data.length,
