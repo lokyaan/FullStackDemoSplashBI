@@ -9,9 +9,9 @@ pipeline {
         stage('Build & Deploy with Docker Compose') {
             steps {
                 sh '''
-                    docker compose down || true
-                    docker compose build --no-cache
-                    docker compose up -d
+                    docker-compose down || true
+                    docker-compose build --no-cache
+                    docker-compose up -d
                     docker ps
                 '''
             }
