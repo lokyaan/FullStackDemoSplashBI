@@ -1,60 +1,26 @@
 pipeline {
     agent any
 
-    triggers{
-        githubPush()
-    }
-
     stages {
-
-        stage('Build Backend') {
-            steps {
-                sh '''
-                    echo "=== Backend Build ==="
-                    cd FullStackDemo-Backend
-                    chmod +x gradlew
-                    ./gradlew clean build -x test
-                '''
-            }
+        stage('Checkout') {
+            steps { checkout scm }
         }
 
-        
-        stage('Build Frontend') {
+        stage('Build & Deploy with Docker Compose') {
             steps {
                 sh '''
-                    echo "=== Frontend Build ==="
-                    cd FullStackDemo-Frontend
-                    npm install
-                    npm run build
-                '''
-            }
-        }
-
-        stage('Docker build and deploy'){
-            steps{
-                sh'''
-                    echo "Stopping old containers"
-                    docker-compose down || true
-
-                    echo "Building and starting new containers"
-                    docker-compose up -d --build
-
+                    docker compose down || true
+                    docker compose build --no-cache
+                    docker compose up -d
+                    docker ps
                 '''
             }
         }
     }
 
     post {
-        success {
-            echo ' CI pipeline completed successfully'
-            echo ' Application deployed successfully'
-        }
-        failure {
-            echo ' CI pipeline failed'
-            echo ' Application deploy failed'
-        }
-        always {
-            echo ' Pipeline finished'
-        }
+        always { echo 'Pipeline finished' }
+        success { echo ' App is up (frontend + backend)' }
+        failure { echo ' Build/deploy failed' }
     }
 }
