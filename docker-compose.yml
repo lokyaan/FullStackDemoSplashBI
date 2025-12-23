@@ -33,13 +33,22 @@ services:
       SPRING_DATASOURCE_PASSWORD: Welcome#$4321
       APP_JWT_SECRET: d9f3c7e4b8a2f1c9e0a4b7d8c2e9f6a1b3d5e7f8a9c0b1d2e3f4a5b6c7d8e9
       APP_JWT_EXPIRATION_MS: 86400000
-
     ports:
       - "8080:8080"
     networks:
       - fullstack-network
     restart: always
-
+    command: >
+      sh -c "
+        echo '=== Waiting for MySQL ===';
+        apk add --no-cache netcat-openbsd;
+        until nc -z mysql 3306; do
+          echo 'MySQL not ready - waiting...';
+          sleep 2;
+        done;
+        echo '=== MySQL READY - Starting Spring Boot ===';
+        java -jar /app.jar
+      "
   frontend:
     build: ./FullStackDemo-Frontend
     container_name: fullstack-frontend
