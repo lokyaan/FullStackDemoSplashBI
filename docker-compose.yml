@@ -10,6 +10,8 @@ services:
       MYSQL_DATABASE: fullStackDemo
     ports:
       - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       - fullstack-network
     healthcheck:
@@ -30,7 +32,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: Welcome#$4321
       APP_JWT_SECRET: d9f3c7e4b8a2f1c9e0a4b7d8c2e9f6a1b3d5e7f8a9c0b1d2e3f4a5b6c7d8e9
       APP_JWT_EXPIRATION_MS: 86400000
-      
+
     ports:
       - "8080:8080"
     networks:
@@ -51,3 +53,6 @@ services:
 networks:
   fullstack-network:
     driver: bridge
+
+volumes:
+  mysql_data:
