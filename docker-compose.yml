@@ -1,4 +1,4 @@
-version: '3.8'
+name: fullstackdemo
 
 services:
   mysql:
@@ -16,9 +16,10 @@ services:
       - fullstack-network
     healthcheck:
       test: ["CMD", "mysqladmin", "-uroot", "-pWelcome#$4321", "ping"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 20
+      start_period: 30s
 
   backend:
     build: ./FullStackDemo-Backend
@@ -27,28 +28,19 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fullStackDemo?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      #SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fullStackDemo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      # Database connection
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fullStackDemo?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&connectTimeout=30000&socketTimeout=60000
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Welcome#$4321
       APP_JWT_SECRET: d9f3c7e4b8a2f1c9e0a4b7d8c2e9f6a1b3d5e7f8a9c0b1d2e3f4a5b6c7d8e9
       APP_JWT_EXPIRATION_MS: 86400000
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
     networks:
       - fullstack-network
     restart: always
-    command: >
-      sh -c "
-        echo '=== Waiting for MySQL ===';
-        apk add --no-cache netcat-openbsd;
-        until nc -z mysql 3306; do
-          echo 'MySQL not ready - waiting...';
-          sleep 2;
-        done;
-        echo '=== MySQL READY - Starting Spring Boot ===';
-        java -jar /app.jar
-      "
+
   frontend:
     build: ./FullStackDemo-Frontend
     container_name: fullstack-frontend
